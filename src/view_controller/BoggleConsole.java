@@ -12,7 +12,6 @@
 package view_controller;
 
 import java.util.Scanner;
-import java.util.TreeSet;
 
 import model.Boggle;
 import model.DiceTray;
@@ -33,7 +32,7 @@ public class BoggleConsole {
 		setupGame();
 		String input = getInput();
 		boggle.gradeUserAnswers(input);
-		gameConclusion();
+		System.out.println(boggle.gameConclusion());
 	}
 
 	/**
@@ -67,43 +66,4 @@ public class BoggleConsole {
 		scanner.close();
 		return userInput.toString();
 	}
-
-	/**
-	 * Description: gameConclusion() prints the results of the round.
-	 */
-	private static void gameConclusion() {
-		TreeSet<String> wordSet = boggle.getCorrectGuesses();
-		String resultTitle = "\nWords you found:";
-
-		System.out.println("\nScore: " + boggle.getScore());
-		printOutput(resultTitle, wordSet);
-
-		wordSet = boggle.getIncorrectGuesses();
-		resultTitle = "\nIncorrect words:";
-		printOutput(resultTitle, wordSet);
-
-		wordSet = boggle.getMissedWords();
-		resultTitle = "\nYou could have found these " + wordSet.size()
-				+ " more words:";
-		printOutput(resultTitle, wordSet);
-	}
-
-	/**
-	 * Description: printOutput() is a helper function for gameConclusion. It
-	 * prints the prompt and a TreeSet<String> set of words.
-	 * 
-	 * @param prompt
-	 *               A string title to be printed before the list of words
-	 * @param set
-	 *               A TreeSet<String> containing the words to be printed.
-	 */
-	private static void printOutput(String prompt, TreeSet<String> set) {
-		System.out.println(prompt);
-		StringBuilder str = new StringBuilder();
-		for (String word : set) {
-			str.append(" " + word);
-		}
-		System.out.println(str.toString().trim());
-	}
-
 }

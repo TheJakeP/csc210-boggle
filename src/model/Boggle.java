@@ -27,7 +27,9 @@ public class Boggle {
 	private DiceTray tray;
 
 	public Boggle() {
-		createDictionary();
+		readInDictionaryFromFile();
+		tray = new DiceTray();
+		findAllAnswers();
 	}
 
 	/**
@@ -37,7 +39,7 @@ public class Boggle {
 	 * @param tray
 	 */
 	public Boggle(DiceTray t) {
-		createDictionary();
+		readInDictionaryFromFile();
 		tray = t;
 		findAllAnswers();
 	}
@@ -59,7 +61,7 @@ public class Boggle {
 	 * Description: Reads the dictionary file and adds words to the dictionary
 	 * class variable.
 	 */
-	private void createDictionary() {
+	private void readInDictionaryFromFile() {
 		File dict = new File("BoggleWords.txt");
 		String word;
 		try {
@@ -88,7 +90,7 @@ public class Boggle {
 	 */
 	public TreeSet<String> gradeUserAnswers(String input) {
 		Scanner scanner = new Scanner(input);
-		return checkInput(scanner);
+		return addUserInput(scanner);
 	}
 
 	/**
@@ -97,7 +99,7 @@ public class Boggle {
 	 * @param input
 	 *              A scanner class object that can be parsed.
 	 */
-	public TreeSet<String> checkInput(Scanner input) {
+	public TreeSet<String> addUserInput(Scanner input) {
 		String word;
 
 		while (input.hasNext()) {
@@ -175,6 +177,51 @@ public class Boggle {
 
 		}
 		return missedWords;
+	}
+
+	public String[][] getStringArray() {
+		return tray.getStringArray();
+	}
+
+	public String gameConclusion() {
+		StringBuilder str = new StringBuilder();
+		TreeSet<String> wordSet = getCorrectGuesses();
+		String concat;
+
+		String resultTitle = "\nWords you found:";
+		str.append("\nScore: " + getScore() + "\n");
+		concat = printOutput(resultTitle, wordSet);
+		str.append("\n" + concat + "\n");
+
+		wordSet = getIncorrectGuesses();
+		resultTitle = "\nIncorrect words:";
+		concat = printOutput(resultTitle, wordSet);
+		str.append("\n" + concat + "\n");
+
+		wordSet = getMissedWords();
+		resultTitle = "\nYou could have found these " + wordSet.size()
+				+ " more words:";
+		concat = printOutput(resultTitle, wordSet);
+		str.append("\n" + concat + "\n");
+
+		return str.toString();
+	}
+
+	/**
+	 * Description: printOutput() is a helper function for gameConclusion. It
+	 * prints the prompt and a TreeSet<String> set of words.
+	 * 
+	 * @param prompt
+	 *               A string title to be printed before the list of words
+	 * @param set
+	 *               A TreeSet<String> containing the words to be printed.
+	 */
+	private String printOutput(String prompt, TreeSet<String> set) {
+		StringBuilder str = new StringBuilder(prompt + "\n");
+		for (String word : set) {
+			str.append(word + " ");
+		}
+		return str.toString().trim();
 	}
 
 }
