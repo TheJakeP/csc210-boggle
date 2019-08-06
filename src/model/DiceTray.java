@@ -1,8 +1,9 @@
-package model;
-
-import java.util.HashSet;
-
 /**
+ * 
+ * Description: This class represents the Boggle Dice Tray. It can be called to
+ * check that a character sequence is valid and available in the gameplay. It
+ * does not check those against a dictionary.
+ * 
  * @author Jacob Phelps
  * @file DiceTray.java
  *
@@ -10,12 +11,16 @@ import java.util.HashSet;
  *       Course CSC: 210
  *       Assignment: 34 - Boggle 1
  */
+
+package model;
+
 public class DiceTray {
 
-	int ROWS;
-	int COLS;
-	HashSet<String> collection = new HashSet<String>();
 	private char[][] board;
+	private int COLS;
+	private String findThis = "";
+	private int ROWS;
+	boolean wordFound;
 
 	/**
 	 * Construct a tray of dice using a hard coded 2D array of chars. Use this
@@ -120,10 +125,6 @@ public class DiceTray {
 	 *            letters
 	 * @return True if search is found
 	 */
-
-	boolean wordFound;
-	private String findThis = "";
-
 	public boolean found(String attempt) {
 		wordFound = false;
 		findThis = attempt.toUpperCase();
@@ -137,6 +138,29 @@ public class DiceTray {
 			}
 		}
 		return wordFound;
+	}
+
+	/**
+	 * Returns the Dice Tray as a string of the following format:
+	 * A B S E
+	 * I M T N
+	 * N D E D
+	 * S S E N
+	 * 
+	 * @return String
+	 */
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		for (char[] row : board) {
+			for (char c : row) {
+				str.append("  " + c);
+			}
+			str.append("\n");
+		}
+		str.setLength(str.length() - 1);
+
+		return str.toString();
 	}
 
 }
